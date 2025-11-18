@@ -29,6 +29,10 @@ fun AppNavigation() {
             val signUpViewModel: SignUpViewModel = viewModel()
             SignUpScreen(navController = navController, viewModel = signUpViewModel)
         }
+        composable("posts") {
+            val postViewModel: PostViewModel = viewModel()
+            PostScreen(navController = navController, viewModel = postViewModel)
+        }
 
         navigation(startDestination = "home", route = "main_flow") {
 

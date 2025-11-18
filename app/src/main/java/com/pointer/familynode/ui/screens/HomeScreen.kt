@@ -15,6 +15,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
+import androidx.compose.material.icons.filled.Http
 import androidx.compose.material3.*
 import androidx.compose.material3.windowsizeclass.ExperimentalMaterial3WindowSizeClassApi
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
@@ -50,6 +51,7 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
         if (newNoteId.isNotBlank()) navController.navigate("note/$newNoteId")
     }
     val onNoteClicked = { noteId: String -> navController.navigate("note/$noteId") }
+    val onPostsClicked = { navController.navigate("posts") }
 
     when (windowSizeClass.widthSizeClass) {
         WindowWidthSizeClass.Compact -> {
@@ -57,7 +59,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 uiState = uiState,
                 onGroupSelected = viewModel::selectGroup,
                 onAddNewNote = onAddNewNote,
-                onNoteClicked = onNoteClicked
+                onNoteClicked = onNoteClicked,
+                onPostsClicked = onPostsClicked
             )
         }
         else -> {
@@ -65,7 +68,8 @@ fun HomeScreen(navController: NavController, viewModel: HomeViewModel) {
                 uiState = uiState,
                 onGroupSelected = viewModel::selectGroup,
                 onAddNewNote = onAddNewNote,
-                onNoteClicked = onNoteClicked
+                onNoteClicked = onNoteClicked,
+                onPostsClicked = onPostsClicked
             )
         }
     }
@@ -76,7 +80,8 @@ fun ExpandedHomeScreen(
     uiState: AppUiState,
     onGroupSelected: (String) -> Unit,
     onAddNewNote: () -> Unit,
-    onNoteClicked: (String) -> Unit
+    onNoteClicked: (String) -> Unit,
+    onPostsClicked: () -> Unit
 ) {
     val selectedGroup = uiState.groups.find { it.id == uiState.selectedGroupId }
 
@@ -99,7 +104,8 @@ fun ExpandedHomeScreen(
                 showMenuButton = false,
                 onMenuClick = { },
                 onAddNoteClicked = onAddNewNote,
-                onNoteClicked = onNoteClicked
+                onNoteClicked = onNoteClicked,
+                onPostsClicked = onPostsClicked
             )
         }
     }
@@ -110,7 +116,8 @@ fun CompactHomeScreen(
     uiState: AppUiState,
     onGroupSelected: (String) -> Unit,
     onAddNewNote: () -> Unit,
-    onNoteClicked: (String) -> Unit
+    onNoteClicked: (String) -> Unit,
+    onPostsClicked: () -> Unit
 ) {
     var isSidePanelVisible by remember { mutableStateOf(false) }
     val selectedGroup = uiState.groups.find { it.id == uiState.selectedGroupId }
@@ -158,7 +165,8 @@ fun CompactHomeScreen(
                 showMenuButton = true,
                 onMenuClick = { isSidePanelVisible = !isSidePanelVisible },
                 onAddNoteClicked = onAddNewNote,
-                onNoteClicked = onNoteClicked
+                onNoteClicked = onNoteClicked,
+                onPostsClicked = onPostsClicked
             )
         }
     }
@@ -282,7 +290,8 @@ fun NotesContent(
     showMenuButton: Boolean,
     onMenuClick: () -> Unit,
     onAddNoteClicked: () -> Unit,
-    onNoteClicked: (String) -> Unit
+    onNoteClicked: (String) -> Unit,
+    onPostsClicked: () -> Unit
 ) {
     var searchQuery by remember { mutableStateOf("") }
 
@@ -302,11 +311,19 @@ fun NotesContent(
                 }
                 Text("Notas", style = MaterialTheme.typography.headlineLarge)
             }
-            IconButton(
-                onClick = onAddNoteClicked,
-                modifier = Modifier.clip(CircleShape).background(PlusButtonBackground)
-            ) {
-                Icon(Icons.Filled.Add, contentDescription = "Añadir Nota", tint = TextPrimary)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                IconButton(
+                    onClick = onPostsClicked,
+                ) {
+                    Icon(Icons.Default.Http, contentDescription = "Ver Posts API", tint = TextPrimary)
+                }
+
+                IconButton(
+                    onClick = onAddNoteClicked,
+                    modifier = Modifier.clip(CircleShape).background(PlusButtonBackground)
+                ) {
+                    Icon(Icons.Filled.Add, contentDescription = "Añadir Nota", tint = TextPrimary)
+                }
             }
         }
         Spacer(modifier = Modifier.height(16.dp))
