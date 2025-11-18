@@ -5,7 +5,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Face
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Work
-import androidx.lifecycle.ViewModel
 import com.pointer.familynode.model.*
 import com.pointer.familynode.ui.theme.AvatarGreen
 import com.pointer.familynode.ui.theme.AvatarPurple
@@ -14,13 +13,12 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.*
 import kotlin.math.max
 import kotlin.math.min
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import com.pointer.familynode.data.SettingsRepository
+import com.pointer.familynode.repository.SettingsRepository
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 

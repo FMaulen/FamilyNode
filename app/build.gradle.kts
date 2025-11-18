@@ -80,4 +80,11 @@ dependencies {
     implementation("com.google.code.gson:gson:2.10.1")
 
     implementation("androidx.datastore:datastore-preferences:1.0.0")
+
+    // Para la comunicacion con la API
+    implementation("com.squareup.retrofit2:retrofit:2.11.0")
+    implementation("com.squareup.retrofit2:converter-gson:2.11.0")
+
+    // Corrutina
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
 }
