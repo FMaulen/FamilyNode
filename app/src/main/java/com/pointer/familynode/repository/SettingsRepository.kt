@@ -1,4 +1,4 @@
-package com.pointer.familynode.data
+package com.pointer.familynode.repository
 
 import android.content.Context
 import androidx.datastore.core.DataStore
