@@ -10,9 +10,11 @@ import androidx.navigation.compose.rememberNavController
 import com.pointer.familynode.ui.screens.EditNoteScreen
 import com.pointer.familynode.ui.screens.HomeScreen
 import com.pointer.familynode.ui.screens.LoginScreen
+import com.pointer.familynode.ui.screens.PostScreen
 import com.pointer.familynode.ui.screens.SignUpScreen
 import com.pointer.familynode.viewmodel.HomeViewModel
 import com.pointer.familynode.viewmodel.LoginViewModel
+import com.pointer.familynode.viewmodel.PostViewModel
 import com.pointer.familynode.viewmodel.SignUpViewModel
 
 @Composable

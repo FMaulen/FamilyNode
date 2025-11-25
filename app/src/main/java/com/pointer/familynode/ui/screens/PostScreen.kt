@@ -38,6 +38,8 @@ import com.pointer.familynode.ui.theme.CardBackground
 import com.pointer.familynode.ui.theme.TextPrimary
 import com.pointer.familynode.ui.theme.TextSecondary
 import com.pointer.familynode.viewmodel.PostViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -47,7 +49,7 @@ fun PostScreen(
     // For testing: allow providing a fixed uiState to avoid relying on real ViewModel
     previewUiState: com.pointer.familynode.viewmodel.PostUiState? = null
 ) {
-    val uiState by (previewUiState?.let { kotlinx.coroutines.flow.MutableStateFlow(it).asStateFlow() } ?: viewModel.uiState).collectAsState()
+    val uiState by (previewUiState?.let { MutableStateFlow(it).asStateFlow() } ?: viewModel.uiState).collectAsState()
 
     Scaffold(
         topBar = {

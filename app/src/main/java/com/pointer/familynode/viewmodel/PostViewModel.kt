@@ -16,22 +16,25 @@ data class PostUiState(
     val error: String? = null
 )
 
-class PostViewModel : ViewModel() {
-    private val repository = PostRepository()
+class PostViewModel(private val repository: PostRepository) : ViewModel() {
+
     private val _uiState = MutableStateFlow(PostUiState())
     val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
+
     init {
         fetchPosts()
     }
 
+
     private fun fetchPosts() {
+        _uiState.update { it.copy(isLoading = true) }
         viewModelScope.launch {
             try {
                 val posts = repository.getPosts()
-                _uiState.update { it.copy(posts = posts, isLoading = false) }
+                _uiState.update { it.copy(posts = posts, isLoading = false, error = null) }
             } catch (e: Exception) {
                 _uiState.update { it.copy(error = "Error al obtener los datos: ${e.message}", isLoading = false) }
-                e.printStackTrace()
+                // e.printStackTrace() // Es mejor no tener esto en el ViewModel
             }
         }
     }

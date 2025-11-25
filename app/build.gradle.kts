@@ -91,4 +91,17 @@ dependencies {
 
     // Corrutina
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-android:1.8.0")
+
+    //Testeo Core
+    testImplementation ("junit:junit:4.13.2")
+    testImplementation ("io.mockk:mockk:1.13.")
+    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation ("app.cash.turbine:turbine:1.0.0")
+
+    //Testeo AndroidX
+    testImplementation ("androidx.arch.core:core-testing:2.2.0")
+
+    //Testeo de la UI
+    androidTestImplementation ("androidx.compose.ui:ui-test-junit4")
+    debugImplementation ("androidx.compose.ui:ui-test-manifest")
 }
