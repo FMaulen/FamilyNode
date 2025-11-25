@@ -43,9 +43,11 @@ import com.pointer.familynode.viewmodel.PostViewModel
 @Composable
 fun PostScreen(
     navController: NavController,
-    viewModel: PostViewModel = viewModel()
+    viewModel: PostViewModel = viewModel(),
+    // For testing: allow providing a fixed uiState to avoid relying on real ViewModel
+    previewUiState: com.pointer.familynode.viewmodel.PostUiState? = null
 ) {
-    val uiState by viewModel.uiState.collectAsState()
+    val uiState by (previewUiState?.let { kotlinx.coroutines.flow.MutableStateFlow(it).asStateFlow() } ?: viewModel.uiState).collectAsState()
 
     Scaffold(
         topBar = {
