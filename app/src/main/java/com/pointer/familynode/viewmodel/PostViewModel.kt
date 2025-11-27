@@ -16,10 +16,10 @@ data class PostUiState(
     val error: String? = null
 )
 
-class PostViewModel(private val repository: PostRepository) : ViewModel() {
+open class PostViewModel(private val repository: PostRepository = PostRepository()) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PostUiState())
-    val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
+    open val uiState: StateFlow<PostUiState> = _uiState.asStateFlow()
 
     init {
         fetchPosts()

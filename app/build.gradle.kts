@@ -38,6 +38,13 @@ android {
     buildFeatures {
         compose = true
     }
+    packaging {
+        resources {
+            excludes += "/META-INF/LICENSE.md"
+            excludes += "/META-INF/LICENSE-notice.md"
+            excludes += "/META-INF/{AL2.0,LGPL2.1}"
+        }
+    }
 }
 
 dependencies {
@@ -54,6 +61,7 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.compose.foundation)
     implementation(libs.androidx.compose.animation.core)
+    implementation(libs.androidx.material3)
     testImplementation(libs.junit)
     testImplementation("io.mockk:mockk:1.13.5")
     testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
@@ -94,8 +102,7 @@ dependencies {
 
     //Testeo Core
     testImplementation ("junit:junit:4.13.2")
-    testImplementation ("io.mockk:mockk:1.13.")
-    testImplementation ("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    androidTestImplementation("io.mockk:mockk-android:1.13.10")
     testImplementation ("app.cash.turbine:turbine:1.0.0")
 
     //Testeo AndroidX
@@ -104,4 +111,7 @@ dependencies {
     //Testeo de la UI
     androidTestImplementation ("androidx.compose.ui:ui-test-junit4")
     debugImplementation ("androidx.compose.ui:ui-test-manifest")
+
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.8.0")
+    testImplementation("org.junit.jupiter:junit-jupiter:5.10.0")
 }

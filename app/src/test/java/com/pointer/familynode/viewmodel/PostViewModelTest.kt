@@ -1,48 +1,41 @@
 package com.pointer.familynode.viewmodel
 
+import androidx.compose.material3.ExperimentalMaterial3Api
 import com.pointer.familynode.model.Post
 import com.pointer.familynode.repository.PostRepository
 import io.mockk.coEvery
-import io.mockk.mockkConstructor
-import io.mockk.unmockkConstructor
+import io.mockk.mockk
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.test.StandardTestDispatcher
-import kotlinx.coroutines.test.runTest
-import kotlinx.coroutines.test.setMain
-import kotlinx.coroutines.test.resetMain
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.test.*
 import org.junit.After
 import org.junit.Assert.*
 import org.junit.Before
 import org.junit.Test
 
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalCoroutinesApi::class)
 class PostViewModelTest {
+
+    private val dispatcher = StandardTestDispatcher()
 
     @Before
     fun setup() {
-        // nothing here; set Main in each test
+        Dispatchers.setMain(dispatcher)
     }
 
     @After
     fun tearDown() {
-        try {
-            unmockkConstructor(PostRepository::class)
-        } catch (_: Exception) {
-        }
-        resetMain()
+        Dispatchers.resetMain()
     }
 
     @Test
     fun `uiState updates correctly on success`() = runTest {
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(dispatcher)
-
-        mockkConstructor(PostRepository::class)
-        coEvery { anyConstructed<PostRepository>().getPosts() } returns listOf(Post(1, 1, "uno", "cuerpo"))
-
-        val vm = PostViewModel()
+        val mockRepo = mockk<PostRepository>()
+        coEvery { mockRepo.getPosts() } returns listOf(Post(1, 1, "uno", "cuerpo"))
+        val vm = PostViewModel(repository = mockRepo)
 
         // advance until launched coroutine finishes
-        testScheduler.advanceUntilIdle()
+        advanceUntilIdle()
 
         val state = vm.uiState.value
         assertFalse(state.isLoading)
@@ -53,15 +46,12 @@ class PostViewModelTest {
 
     @Test
     fun `uiState updates with error on failure`() = runTest {
-        val dispatcher = StandardTestDispatcher(testScheduler)
-        Dispatchers.setMain(dispatcher)
+        val mockRepo = mockk<PostRepository>()
+        coEvery { mockRepo.getPosts() } throws RuntimeException("boom")
 
-        mockkConstructor(PostRepository::class)
-        coEvery { anyConstructed<PostRepository>().getPosts() } throws RuntimeException("boom")
+        val vm = PostViewModel(repository = mockRepo)
 
-        val vm = PostViewModel()
-
-        testScheduler.advanceUntilIdle()
+        advanceUntilIdle()
 
         val state = vm.uiState.value
         assertFalse(state.isLoading)

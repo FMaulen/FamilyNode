@@ -1,5 +1,6 @@
 package com.pointer.familynode.ui.screens
 
+import androidx.activity.ComponentActivity
 import androidx.compose.ui.test.junit4.createAndroidComposeRule
 import androidx.compose.ui.test.onNodeWithText
 import androidx.compose.ui.test.assertIsDisplayed
@@ -9,11 +10,18 @@ import com.pointer.familynode.ui.MainActivity
 import com.pointer.familynode.viewmodel.PostUiState
 import org.junit.Rule
 import org.junit.Test
+import com.pointer.familynode.repository.PostRepository
+import com.pointer.familynode.viewmodel.PostViewModel
+import io.mockk.mockk
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+
 
 class PostScreenTest {
 
     @get:Rule
-    val composeRule = createAndroidComposeRule<MainActivity>()
+    val composeRule = createAndroidComposeRule<ComponentActivity>()
 
     @Test
     fun postsAreShown_whenUiStateHasPosts() {
@@ -22,12 +30,16 @@ class PostScreenTest {
             Post(userId = 1, id = 2, title = "segundo post", body = "cuerpo2")
         )
 
-        val previewState = PostUiState(posts = posts, isLoading = false)
+        val fakeViewModel = object : PostViewModel(mockk(relaxed = true)) {
+            override val uiState: StateFlow<PostUiState> = MutableStateFlow(
+                PostUiState(posts = posts, isLoading = false)
+            ).asStateFlow()
+        }
 
         val navController = TestNavHostController(composeRule.activity)
 
         composeRule.setContent {
-            PostScreen(navController = navController, previewUiState = previewState)
+            PostScreen(navController = navController, viewModel = fakeViewModel)
         }
 
         // Titles are capitalized in the UI
@@ -37,11 +49,16 @@ class PostScreenTest {
 
     @Test
     fun errorIsShown_whenUiStateHasError() {
-        val previewState = PostUiState(error = "Fallo al cargar", isLoading = false)
+        val fakeViewModel = object : PostViewModel(mockk(relaxed = true)) {
+            override val uiState: StateFlow<PostUiState> = MutableStateFlow(
+                PostUiState(error = "Fallo al cargar", isLoading = false)
+            ).asStateFlow()
+        }
+
         val navController = TestNavHostController(composeRule.activity)
 
         composeRule.setContent {
-            PostScreen(navController = navController, previewUiState = previewState)
+            PostScreen(navController = navController, viewModel = fakeViewModel)
         }
 
         composeRule.onNodeWithText("¡Vaya, pajaron! Algo salió mal:").assertIsDisplayed()

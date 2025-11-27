@@ -32,7 +32,7 @@ fun AppNavigation() {
             SignUpScreen(navController = navController, viewModel = signUpViewModel)
         }
         composable("posts") {
-            val postViewModel: PostViewModel = viewModel()
+            val postViewModel: PostViewModel = viewModel { PostViewModel() }
             PostScreen(navController = navController, viewModel = postViewModel)
         }
 
